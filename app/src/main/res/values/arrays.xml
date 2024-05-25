@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="images">
+        <item>https://wallpaperaccess.com/full/46195.jpg</item>
+        <item>https://wallpaperaccess.com/full/461967.jpg</item>
+        <item>https://wallpaperaccess.com/full/131641.jpg</item>
+        <item>https://wallpaperaccess.com/full/131672.jpg</item>
+        <item>https://wallpaperaccess.com/full/462014.jpg</item>
+        <item>https://wallpaperaccess.com/full/462016.jpg</item>
+        <item>https://wallpaperaccess.com/full/462100.jpg</item>
+
+    </string-array>
+</resources>
