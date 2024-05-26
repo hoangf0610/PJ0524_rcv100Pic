@@ -11,9 +11,33 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class RvAdapter (var ds:List<Item>): RecyclerView.Adapter<RvAdapter.PicViewHolder>() {
+class RvAdapter (var ds:MutableList<Item>): RecyclerView.Adapter<RvAdapter.PicViewHolder>() {
 //    class viewholder
     inner class PicViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
+
+    private fun incrementNumber(item: Item) {
+//      chuyển đổi number String -> Int
+        val currentNumber = item.number.toIntOrNull() ?: 0 // default là 0, nếu chuyển đổi thất bại
+        item.number = (currentNumber + 1).toString()
+    }
+
+    private fun checkOdd(item: Item) {
+//        check number odd
+        val currentNumber = item.number.toIntOrNull() ?: 0
+        item.odd = currentNumber % 2 != 0
+    }
+
+    fun applyOddCheck() {
+//        sử dụng fun checkOdd cho mỗi item trong ds
+        ds.forEach { checkOdd(it) }
+    }
+
+    fun updateData(newData: MutableList<Item>) {
+//        update ds
+        ds = newData
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicViewHolder {
 //        chuyển đổi xml layout sang view
@@ -26,21 +50,16 @@ class RvAdapter (var ds:List<Item>): RecyclerView.Adapter<RvAdapter.PicViewHolde
         return ds.size
     }
 
-
-
     override fun onBindViewHolder(holder: PicViewHolder, position: Int) {
 //    gán các phần tử vào layout
 //        holder.itemView.findViewById<ImageView>(R.id.imgPic).setImageResource(ds[position].image.toInt())
+//        checkOdd(ds[position])
         Glide.with(holder.itemView.findViewById<ImageView>(R.id.imgPic)).load(ds[position].image).into(holder.itemView.findViewById<ImageView>(R.id.imgPic))
         holder.itemView.findViewById<TextView>(R.id.tvNumber).text = ds[position].number.toString()
         holder.itemView.findViewById<Button>(R.id.btnPlus).setOnClickListener{
-            ds[position].incrementNumber()
+            incrementNumber(ds[position])
             holder.itemView.findViewById<TextView>(R.id.tvNumber).text = ds[position].number.toString()
         }
 
-        ds[position].checkOdd()
-
     }
-
-
 }
