@@ -37,22 +37,17 @@ class PictureAdapter (var pictureList:MutableList<PictureItem>, val listener: On
 
     override fun getItemCount(): Int = pictureList.size
 
-
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
-        val listPosition = pictureList[position]
+        val picturePosition = pictureList[position]
 //    gán các phần tử vào layout
-        Glide.with(holder.imgPic.context).load(listPosition.image).into(holder.imgPic)
-        holder.tvNumber.text = listPosition.number.toString()
-//        holder.tvNumber.text = mainActivity.tvPicVM.value.toString()
-
-
+        Glide.with(holder.imgPic.context).load(picturePosition.image).into(holder.imgPic)
+        holder.tvNumber.text = picturePosition.number.toString()
         holder.btnPlus.setOnClickListener{
-            holder.tvNumber.text = listPosition.incrementNumber().toString()
+            holder.tvNumber.text = picturePosition.incrementNumber().toString()
         }
-
 //      sử dụng interface
         holder.imgPic.setOnClickListener{
-            listener.onItemClick(listPosition, position)
+            listener.onItemClick(picturePosition, position)
         }
     }
 

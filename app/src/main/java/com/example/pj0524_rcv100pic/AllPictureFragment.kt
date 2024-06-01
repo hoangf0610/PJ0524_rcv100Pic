@@ -1,44 +1,52 @@
 package com.example.pj0524_rcv100pic
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pj0524_rcv100pic.databinding.FragmentAllPictureBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
 class AllPictureFragment : Fragment(R.layout.fragment_all_picture) {
+    //    binding
+    private var _binding: FragmentAllPictureBinding? = null
+    private val binding get() = _binding!!
 
     companion object {
         const val TAG = "AllPictureFragment"
     }
-
      lateinit var pictureList: MutableList<PictureItem>
      lateinit var tempAdapter: PictureAdapter
+    private var indexSelected = -1 // -1 là không có item nào được chọn
 
-    private var _binding: FragmentAllPictureBinding? = null
-    private val binding get() = _binding!!
-
-    private var indexSelected = -1
-
+    lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Initialize view binding
+//        khởi tạo viewbinding
         _binding = FragmentAllPictureBinding.bind(view)
+//        gán list
         pictureList = generatePictureList()
 
+//        truyền position và fun goToDetailFragment vào adapter
         tempAdapter = PictureAdapter(pictureList,  object : PictureAdapter.OnItemClickInterface {
             override fun onItemClick(pictureItem: PictureItem, position: Int) {
+//                truyền vào
                 indexSelected = position
                 (activity as MainActivity).goToDetailFragment(pictureItem)
             }
@@ -61,15 +69,10 @@ class AllPictureFragment : Fragment(R.layout.fragment_all_picture) {
                 pictureList[indexSelected] = it
                 tempAdapter.updateData(pictureList)
             }
-
         }
-
-
-
     }
 
     fun filterOddNumbers() {
-//        tempAdapter.applyOddCheck()
         val filteredList = pictureList.filter { it.odd }.toMutableList()
         tempAdapter.updateData(filteredList)
 
@@ -105,5 +108,39 @@ class AllPictureFragment : Fragment(R.layout.fragment_all_picture) {
         // Clean up the binding reference
         _binding = null
     }
+
+    override fun onPause() {
+        super.onPause()
+        saveData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadData()
+    }
+
+    private fun saveData() {
+        sharedPreferences = requireContext().getSharedPreferences("shareData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(pictureList)
+        editor.putString("recycler list", json)
+        editor.apply()
+    }
+
+    private fun loadData() {
+        sharedPreferences = requireContext().getSharedPreferences("shareData", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("recycler list", null)
+        val type = object : TypeToken<List<PictureItem>>() {}.type
+
+        if (json != null) {
+            pictureList = gson.fromJson(json, type)
+        }
+    }
+
+
+
+
 
 }

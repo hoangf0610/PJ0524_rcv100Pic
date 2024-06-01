@@ -15,15 +15,12 @@ private lateinit var binding: FragmentDetailPictureBinding
 
 @Suppress("UNREACHABLE_CODE", "DEPRECATION")
 class DetailPictureFragment : Fragment(R.layout.fragment_detail_picture) {
-    companion object {
-        const val TAG = "DetailPictureFragment"
-    }
-
-    lateinit var DetailView: View
-
     private var _binding: FragmentDetailPictureBinding? = null
     private val binding get() = _binding!!
 
+    companion object {
+        const val TAG = "DetailPictureFragment"
+    }
     var number = 0
 
 
@@ -31,15 +28,14 @@ class DetailPictureFragment : Fragment(R.layout.fragment_detail_picture) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 //        return super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentDetailPictureBinding.inflate(inflater, container, false)
         val view = binding.root
 
-////      nhận data từ AllPictureFragment, intent main chuyền sang
+////      nhận data từ AllPictureFragment chuyền sang
         var imgUrl = arguments?.getString("imgUrl")  ?: ""
         number = arguments?.getInt("number") ?: 0
-        var odd = arguments?.getBoolean("odd")
 
 //        ánh xạ view
         Glide.with(this).load(imgUrl).into(binding.imgDetailPic)
@@ -49,20 +45,13 @@ class DetailPictureFragment : Fragment(R.layout.fragment_detail_picture) {
             binding.tvDetailNumber.text = number.toString()
         }
         binding.btnDetailMinus.setOnClickListener {
-            binding.tvDetailNumber.text = decrementNumber().toString()
+            decrementNumber()
+            binding.tvDetailNumber.text = number.toString()
         }
         binding.btnSubmit.setOnClickListener {
-            (activity as MainActivity).tvPicVM.value = binding.tvDetailNumber.text.toString().toInt()
-
             (activity as MainActivity).imgVM.value = PictureItem( imgUrl, number)
-
-
             parentFragmentManager.popBackStack()
-
-
-
         }
-
         return view
     }
 
@@ -76,11 +65,8 @@ class DetailPictureFragment : Fragment(R.layout.fragment_detail_picture) {
         return number
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
