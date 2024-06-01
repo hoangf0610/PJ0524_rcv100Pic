@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="@+id/btnFilter"
         tools:ignore="MissingConstraints" />
 
+
     <Button
         android:id="@+id/btnFilter"
         android:layout_width="wrap_content"
@@ -33,13 +34,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvItem"
+
+<!--    <Button-->
+<!--        android:id="@+id/btnModel1"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="12dp"-->
+<!--        android:text="1"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/btnFilter"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/btnFilter"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/btnFilter"-->
+<!--        app:layout_constraintVertical_bias="0.0"-->
+<!--        tools:ignore="MissingConstraints" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnModel2"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="2"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/btnModel1"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/btnModel1"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/btnModel1"-->
+<!--        tools:ignore="MissingConstraints" />-->
+
+    <FrameLayout
+        android:id="@+id/flFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        android:paddingBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFilter" />
+        app:layout_constraintTop_toBottomOf="@+id/btnFilter"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
